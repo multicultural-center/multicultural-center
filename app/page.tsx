@@ -595,6 +595,23 @@ const heroSlides = [
       >
         연혁
       </a>
+    
+    <a
+  href="/donation-report"
+  style={topMenuButtonStyle}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.background = "#0f172a"
+    e.currentTarget.style.color = "#ffffff"
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.background = "#ffffff"
+    e.currentTarget.style.color = "#0f172a"
+  }}
+>
+  기부금 모금액 및 활용실적
+</a>
+    
+    
     </div>
   )}
 </div>

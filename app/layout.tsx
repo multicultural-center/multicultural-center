@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "파주 다문화센터 | 무료 한국어교실 | 경기서북부 다문화센터",
+  title: " 파주 문산 다문화센터 | 무료 한국어교실 | (사)경기서북부 다문화센터",
   description: "파주 문산 위치 다문화센터. 무료 한국어교육 운영. 외국인 및 다문화가정 지원 프로그램 제공.",
   
   verification: {

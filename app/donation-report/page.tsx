@@ -33,6 +33,11 @@ export default function DonationReportPage() {
             style={iframeStyle}
             title="기부금 모금액 및 활용실적 PDF"
           />
+        
+        <a href="/" style={homeButtonStyle}>
+  🏠 홈으로 돌아가기
+</a>
+        
         </div>
       </section>
     </main>
@@ -112,4 +117,16 @@ const iframeStyle: React.CSSProperties = {
   width: "100%",
   height: "700px",
   border: "none",
+}
+
+const homeButtonStyle: React.CSSProperties = {
+  display: "inline-block",
+  marginTop: 16,
+  padding: "12px 18px",
+  borderRadius: 14,
+  background: "#f1f5f9",
+  color: "#0f172a",
+  fontWeight: 700,
+  textDecoration: "none",
+  border: "1px solid #e2e8f0",
 }
