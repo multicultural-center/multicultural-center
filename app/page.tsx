@@ -356,6 +356,11 @@ const heroSlides = [
   연혁
 </a>
 
+<a
+  href="/donation-report" style={mobileMenuLinkStyle} onClick={() => setMobileMenuOpen(false)}
+>기부금 모금액 및 활용실적
+</a>
+
         <a
           href="/apply"
           style={mobileMenuLinkStyle}
@@ -485,6 +490,11 @@ const heroSlides = [
         >
           연혁
         </a>
+
+<a
+  href="/donation-report" style={mobileMenuLinkStyle} onClick={() => setMobileMenuOpen(false)}
+>기부금 모금액 및 활용실적
+</a>
 
         </div>
     </div>
