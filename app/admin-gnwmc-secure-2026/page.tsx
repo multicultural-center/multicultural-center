@@ -25,7 +25,7 @@ export default function AdminPage() {
   const [inputPassword, setInputPassword] = useState("")
   const [unlocked, setUnlocked] = useState(false)
 
-  const ADMIN_PASSWORD = "1234"
+  const ADMIN_PASSWORD = "100424"
 
   useEffect(() => {
     const saved = localStorage.getItem("adminLogin")
