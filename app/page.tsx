@@ -82,10 +82,74 @@ const closePopupToday = () => {
     setContent(obj)
     setLoading(false)
   }
+      
+      
+  
+
+useEffect(() => {
+  const preventContextMenu = (e: MouseEvent) => {
+    e.preventDefault()
+  }
+
+  const preventCopy = (e: ClipboardEvent) => {
+    e.preventDefault()
+    alert("복사가 제한되어 있습니다.")
+  }
+
+  const preventCut = (e: ClipboardEvent) => {
+    e.preventDefault()
+  }
+
+  const preventPaste = (e: ClipboardEvent) => {
+    e.preventDefault()
+  }
+
+  const preventSelectStart = (e: Event) => {
+    e.preventDefault()
+  }
+
+  const preventKeyDown = (e: KeyboardEvent) => {
+    const key = e.key.toLowerCase()
+
+    if (
+      (e.ctrlKey || e.metaKey) &&
+      ["c", "x", "v", "a", "s", "u", "p"].includes(key)
+    ) {
+      e.preventDefault()
+      alert("해당 기능은 제한되어 있습니다.")
+    }
+
+    if (e.key === "F12") {
+      e.preventDefault()
+    }
+
+    if (e.ctrlKey && e.shiftKey && ["i", "j", "c"].includes(key)) {
+      e.preventDefault()
+    }
+  }
+
+  document.addEventListener("contextmenu", preventContextMenu)
+  document.addEventListener("copy", preventCopy)
+  document.addEventListener("cut", preventCut)
+  document.addEventListener("paste", preventPaste)
+  document.addEventListener("selectstart", preventSelectStart)
+  document.addEventListener("keydown", preventKeyDown)
+
+  return () => {
+    document.removeEventListener("contextmenu", preventContextMenu)
+    document.removeEventListener("copy", preventCopy)
+    document.removeEventListener("cut", preventCut)
+    document.removeEventListener("paste", preventPaste)
+    document.removeEventListener("selectstart", preventSelectStart)
+    document.removeEventListener("keydown", preventKeyDown)
+  }
+}, [])
+
+
 
   useEffect(() => {
-    fetchContent()
-  }, [])
+  fetchContent()
+}, [])
        
  useEffect(() => {
   const checkMobile = () => {
@@ -174,12 +238,14 @@ const heroSlides = [
     subtitle: "매주 토요일 오후 2시 ~ 5시",
     description: "처음 오시는 분도 자유롭게 참여 가능합니다.",
     background: "linear-gradient(135deg, #2f5fd8 0%, #6ea8ff 100%)",
+    image: "/hero-bg.jpg",
   },
   {
-    title: "다문화 지원 프로그램",
+    title: "다문화 교류 활동",
     subtitle: "함께 배우고 함께 성장합니다",
-    description: "외국인 근로자와 다문화 가정을 위한 다양한 지원 사업",
-    background: "linear-gradient(135deg, #7c3aed 0%, #c084fc 100%)",
+    description: "외국인 근로자와 함께하는 따뜻한 공동체",
+    background: "linear-gradient(135deg, #7c3aed 0%, #c084fc 100%)",                                    
+    image: "/multiculural1.jpg",
   },
   {
     title: "센터 소개",
@@ -310,6 +376,39 @@ const heroSlides = [
   }
 }, [loading])
 
+
+ useEffect(() => {
+  const playClickSound = () => {
+  const audio = new Audio("/click.mp3")
+  audio.volume = 0.8
+  audio.play()
+}
+ 
+  const handleClick = (e: MouseEvent) => {
+  const target = e.target as HTMLElement
+  const clickable = target.closest("button, a") as HTMLElement | null
+
+  if (!clickable) return
+
+  playClickSound()
+
+  if ("vibrate" in navigator) {
+    navigator.vibrate([30, 20, 30])
+  }
+
+  clickable.style.transform = "scale(0.96)"
+  clickable.style.transition = "transform 0.08s ease"
+
+  setTimeout(() => {
+    clickable.style.transform = ""
+  }, 90)
+}
+  document.addEventListener("click", handleClick)
+
+  return () => {
+    document.removeEventListener("click", handleClick)
+  }
+}, [])      
 
 
   const copyDonationAccount = async () => {
@@ -500,21 +599,81 @@ const heroSlides = [
     </div>
   </>
 )}
+   
 
-    <h1 style={heroTitleStyle}>
-      사단법인 경기서북부
-      <br />
-      다문화센터
-    </h1>
+ 
+<div
+  style={{
+    ...brandWrapStyle,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: isMobile ? 10 : 18,
+  }}
+>
+  <img
+  src="/logo.png"
+  alt="센터 로고"
+  style={{
+    width: isMobile ? 68 : 110,
+    height: isMobile ? 68 : 110,
+    objectFit: "contain" as const,
+    flexShrink: 0,
+  }}
+/>
+
+  <div style={{ flex: 1, minWidth: 0}}>
+    <div
+      style={{
+        ...corpTextStyle,
+        fontSize: isMobile ? 18 : 26,
+      }}
+    >
+      사단법인
+    </div>
+
+    <h1
+  style={{
+    ...heroTitleStyle,
+    fontSize: isMobile ? "32px" : "56px",
+    whiteSpace: "normal",
+    lineHeight: 1.18,
+  }}
+>
+  경기서북부 다문화센터
+</h1>
+  </div>
+</div>
+
+
 
     <p style={heroSubtitleStyle}>{mainSubtitle}</p>
 
-    <div
+   
+   <div
   style={{
     ...sliderCardStyle,
-    background: heroSlides[currentSlide].background,
+    height: isMobile ? "260px" : "420px",
+
+    ...(heroSlides[currentSlide].image
+      ? {
+          backgroundImage: `
+            linear-gradient(
+              rgba(0,0,0,0.25),
+              rgba(0,0,0,0.25)
+            ),
+            url(${heroSlides[currentSlide].image})
+          `,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }
+      : {
+          background: heroSlides[currentSlide].background,
+        }),
   }}
 >
+
+
   <div style={sliderContentStyle}>
     <div style={sliderBadgeStyle}>{heroSlides[currentSlide].subtitle}</div>
     <div style={sliderTitleStyle}>{heroSlides[currentSlide].title}</div>
@@ -633,13 +792,14 @@ const heroSlides = [
     <h2 style={sectionTitleStyle}>공지사항</h2>
   </div>
 
+  
   <div style={bodyTextStyle}>
     {notice}
   </div>
+
+  
+ 
 </section>
-
-
-
         <section style={sectionCardStyle}>
           <div style={sectionHeaderStyle}>
             <div style={sectionEyebrowStyle}>PROGRAM</div>
@@ -667,7 +827,12 @@ const heroSlides = [
 
             <div style={accountBoxStyle}>{donationAccount}</div>
 
-            <div style={heroButtonRowStyle}>
+            <div style={heroButtonRowStyle}>  
+
+
+
+
+
               <button onClick={copyDonationAccount} style={primaryButtonStyle}>
                 후원계좌 복사
               </button>
@@ -774,7 +939,20 @@ const heroSlides = [
               <div style={contactValueStyle}>{address}</div>
             </div>
           </div>
-        </section>
+        </section>   
+
+      
+       
+       
+       <footer style={footerStyle}>
+  <div style={footerInnerStyle}>
+    <p style={footerCopyStyle}>
+      © {new Date().getFullYear()} Gyeonggi Northwest Multicultural Center. All rights reserved.
+    </p>
+  </div>
+</footer>
+
+
       </div>
     </div>
   )
@@ -784,12 +962,14 @@ const pageStyle: React.CSSProperties = {
   minHeight: "100vh",
   background: "linear-gradient(180deg, #f6f9fc 0%, #edf3f9 100%)",
   color: "#0f172a",
+  userSelect: "none",
+  WebkitUserSelect: "none",
 }
 
 const containerStyle: React.CSSProperties = {
-  maxWidth: 1120,
+  maxWidth: 1400,
   margin: "0 auto",
-  padding: "0 20px 56px",
+  padding: "0 10px 56px",
   boxSizing: "border-box",
 }
 
@@ -844,7 +1024,7 @@ const badgeStyle: React.CSSProperties = {
 
 const heroTitleStyle: React.CSSProperties = {
   margin: 0,
-  fontSize: "clamp(28px, 7vw, 56px)", // 핵심
+  fontSize: "56px", // 핵심
   lineHeight: 1.15,
   fontWeight: 900,
   letterSpacing: "-0.03em",
@@ -1285,7 +1465,6 @@ const mobileMenuLinkStyle: React.CSSProperties = {
  
 const sliderCardStyle: React.CSSProperties = {
   width: "100%",
-  aspectRatio: "16 / 9",
   borderRadius: 26,
   padding: 24,
   boxSizing: "border-box",
@@ -1312,7 +1491,7 @@ const sliderBadgeStyle: React.CSSProperties = {
 }
 
 const sliderTitleStyle: React.CSSProperties = {
-  fontSize: "clamp(24px, 6vw, 54px)",
+  fontSize: "clamp(22px, 5vw, 42px)",
   lineHeight: 1.2,
   fontWeight: 900,
   wordBreak: "keep-all",
@@ -1323,7 +1502,7 @@ const sliderDescriptionStyle: React.CSSProperties = {
   lineHeight: 1.7,
   color: "rgba(255,255,255,0.9)",
   wordBreak: "keep-all",
-  maxWidth: "85%",
+  maxWidth: "70%",
 }
 
 const sliderControlWrapStyle: React.CSSProperties = {
@@ -1378,6 +1557,68 @@ const sliderOuterWrapStyle: React.CSSProperties = {
   flexDirection: "column",
   alignItems: "center",
 }
+
+const footerStyle: React.CSSProperties = {
+  marginTop: 24,
+  borderTop: "1px solid #e2e8f0",
+  background: "#ffffff",
+  padding: "32px 18px",
+  borderRadius: 28,
+  boxShadow: "0 16px 40px rgba(15,23,42,0.06)",
+}
+
+const footerInnerStyle: React.CSSProperties = {
+  textAlign: "center",
+  fontSize: 13,
+  lineHeight: 1.8,
+  color: "#64748b",
+}
+
+const footerNameStyle: React.CSSProperties = {
+  fontWeight: 800,
+  color: "#334155",
+  marginBottom: 4,
+}
+
+const footerCopyStyle: React.CSSProperties = {
+  marginTop: 8,
+  color: "#94a3b8",
+}
+
+
+const mainLogoWrapStyle: React.CSSProperties = {
+  marginBottom: 18,
+  display: "flex",
+  alignItems: "center",
+}
+
+
+   
+const brandWrapStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: 14,
+  marginBottom: 24,
+  flexWrap: "nowrap",
+}
+
+const mainLogoStyle = {
+  width: 110,
+  height: 110,
+  objectFit: "contain",
+  flexShrink: 0,
+}
+
+const corpTextStyle: React.CSSProperties = {
+  fontSize: 26,
+  fontWeight: 800,
+  color: "#334155",
+  marginBottom: 4,
+  letterSpacing: "-0.02em",
+}
+
+
+
 
 declare global {
   interface Window {
