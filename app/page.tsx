@@ -930,7 +930,7 @@ const heroSlides = [
   <div style={contactLabelStyle}>사무국</div>
   <div style={contactValueStyle}>
     ☎️ 031-954-1004{"\n"}
-    📱 010-2313-4714 / 010-2584-8163
+    📱  010-2584-8163 / 010-2313-4714
   </div>
 </div>
 

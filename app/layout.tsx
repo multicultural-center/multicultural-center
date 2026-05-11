@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 
     url: "https://www.gnwmc.com",
 
-    siteName: "경기서북부 다문화센터",
+    siteName: "(사)경기서북부 다문화센터",
 
     images: [
       {
